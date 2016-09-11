@@ -1,27 +1,6 @@
 
 import React, { Component } from 'react'
 
-// let resolvingPledges = []
-// function isResolving(pledge) {
-//   return resolvingPledges.indexOf(pledge) !== -1
-// }
-
-// function resolved(pledge) {
-//   resolvingPledges.splice(resolvingPledges.indexOf(pledge), 1)
-// }
-
-// function resolvePledge(pledge, props) {
-  // if (resolvingPledges.indexOf(pledge) !== -1)
-  //   return
-  
-  // let res = pledge.resolve(props)
-  // if (res.then && res.catch) {
-  //   resolvingPledges.push(pledge)
-  //   res.then(resolved, resolved)
-  // }
-
-// }
-
 export default (pledge, forceFetch) => (WrappedComponent, LoadingComponent = () => null) => {
 
   class Pledge extends Component {

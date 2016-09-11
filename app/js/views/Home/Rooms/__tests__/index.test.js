@@ -11,9 +11,9 @@ import { receivedRooms } from 'actions/RoomsActions'
 describe('Rooms', () => {
 
   it('ConnectedRooms', () => {
-    let store = createStore()
+    let store = createStore({})
 
-    let dom = mount(
+    let dom = shallow(
       <ConnectedRooms />
     , {
       context: {
@@ -26,6 +26,13 @@ describe('Rooms', () => {
     let rooms = [{ id: 1, name: 'Room 1 !'}, { id: 2, name: 'Room 2 !'}, { id: 3, name: 'Room 3 !'}]
     store.dispatch(receivedRooms(rooms))
 
+    dom = shallow(
+      <ConnectedRooms />
+    , {
+      context: {
+        store,
+      }
+    })
     expect(dom.instance().renderedElement.props.rooms).to.eql(rooms)
   })
 })

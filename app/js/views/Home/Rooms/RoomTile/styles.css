@@ -4,4 +4,21 @@
   border: 1px solid #ccc;
   border-radius: 3px;
   display: inline-block;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #915AA8;
+    border-color: #915AA8;
+    color: white;
+  }
+
+  h4 {
+    margin-bottom: 8px;
+  }
+
+  .messages-count, .users-count {
+    font-size: 13px;
+    text-align: center;
+    color: #999;
+  }
 }

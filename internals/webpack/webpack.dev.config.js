@@ -10,8 +10,8 @@ const base = require('./webpack.abstract.config')
 module.exports = Object.assign({}, base, {
   entry: [
     /* Hot reloading */
-    'react-hot-loader/patch',
     'webpack-hot-middleware/client',
+    'react-hot-loader/patch',
 
     /* Entry point */
     path.join(process.cwd(), 'app/run.js'),

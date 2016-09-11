@@ -12,11 +12,18 @@ import s from './styles.css'
 /*
  * Default Component
  */
-export default function Rooms({ rooms, stale }) {
+export default function Rooms({ rooms, onRoomClick = f => f, stale }) {
 
   return (
     <div id={s.rooms}>
-      { rooms && rooms.map(room => <RoomTile key={room.id} name={room.name} />) }
+      { rooms && rooms.map(room => (
+        <RoomTile
+          key={room.id}
+          name={room.name}
+          messageCount={room.messages.length}
+          userCount={room.users.length}
+          onClick={() => onRoomClick(room)} />
+      )) }
     </div>
   )
 }
@@ -31,7 +38,7 @@ export const RoomsLoading = () => (
 /* Pledge HoC @see lib/pledge */
 export const PledgedRooms = withPledge(
   createPledge(
-    (props) => props.rooms,
+    (props) => props.rooms && props.rooms[0].messages,
     (props) => props.hydrateRooms(),
   ),
   true
@@ -51,4 +58,4 @@ export const ConnectedRooms = connect(
   {
     hydrateRooms: storyHydrateAllRooms,
   }
-)(Rooms)
+)(PledgedRooms)

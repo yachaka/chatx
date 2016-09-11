@@ -1,11 +1,13 @@
+
 import React from 'react'
 import { storiesOf, action, linkTo } from '@kadira/storybook'
-import Button from './Button'
 import Welcome from './Welcome'
 
 import 'reset-css/reset.css'
 import 'css/global.css'
 
+import Input from 'components/Input'
+import Button from 'components/Button'
 import Rooms, { RoomsLoading } from 'views/Home/Rooms'
 import RoomTile, { RoomTileLoading } from 'views/Home/Rooms/RoomTile'
 
@@ -14,13 +16,18 @@ storiesOf('Welcome', module)
     <Welcome showApp={linkTo('Button')}/>
   ));
 
-storiesOf('Button', module)
+storiesOf('common.Button', module)
   .add('with text', () => (
     <Button onClick={action('clicked')}>Hello Button</Button>
   ))
   .add('with some emoji', () => (
     <Button onClick={action('clicked')}>😀 😎 👍 💯</Button>
   ));
+
+storiesOf('common.Input', module)
+  .add('default', () => (
+    <Input placeholder="Placeholder" />
+  ))
 
 storiesOf('home.Rooms', module)
   .add('loading', () => {

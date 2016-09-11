@@ -1,0 +1,12 @@
+
+#home {
+
+  .actions {
+    margin-bottom: 10px;
+
+    .createInput {
+      display: inline-block;
+      margin-right: 10px;
+    }
+  }
+}

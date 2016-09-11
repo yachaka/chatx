@@ -23,7 +23,10 @@ export default function createIDMapperReducer(
 
     [actions.INSERT]: (state, { payload: objects }) => {
       return objects.reduce((state, object) => {
-        state[getID(object)] = getObj(object)
+        state[getID(object)] = {
+          ...state[getID(object)],
+          ...getObj(object)
+        }
         
         return state
       }, {...state})

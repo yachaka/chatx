@@ -1,23 +1,30 @@
 
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
+import { routerMiddleware } from 'react-router-redux'
 
-import createApi from 'lib/createApi'
+import { makeGraphQLRequest } from 'lib/makeGraphQLRequest'
+import request from 'lib/request'
 import reducer from './reducer'
 
-export default (initialState) => {
+export default (initialState, history) => {
 
   let middlewares = [
     function (dispatch, getState) {
       return thunk.withExtraArgument({
-        api: createApi(getState)
+        makeGraphQLRequest,
+        request,
       })(dispatch, getState)
-    }
+    },
+    routerMiddleware(history)
   ]
 
   return createStore(
     reducer,
     initialState,
-    applyMiddleware(...middlewares)
+    compose(
+      applyMiddleware(...middlewares),
+      window.devToolsExtension && window.devToolsExtension() || function(f) { return f }
+    )
   )
 }

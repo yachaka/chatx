@@ -1,0 +1,31 @@
+
+.button {
+
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: transparent;
+  margin-right: 10px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.button.primary {
+  $color: #915AA8;
+
+  border-color: $color;
+  color: $color;
+
+  &:hover {
+    border-color: color($color lightness(+12%));
+    color: color($color lightness(+12%));
+  }
+
+  &:active {
+    border-color: color($color blackness(+12%));
+    color: color($color blackness(+12%));
+  }
+}

@@ -1,0 +1,21 @@
+
+#room {
+
+  #main {
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+
+    #users, #messages {
+      padding: 20px;
+    }
+
+    #users {
+      float: right;
+      border-left: 1px solid #ccc;
+    }
+
+    #messages {
+
+    }
+  }
+}

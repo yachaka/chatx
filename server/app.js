@@ -1,6 +1,7 @@
 
 const chalk = require('chalk')
 const express = require('express')
+const history = require('connect-history-api-fallback')
 const webpack = require('webpack')
 const webpackConfig = require('../internals/webpack/webpack.dev.config.js')
 
@@ -9,6 +10,7 @@ const app = express()
 const compiler = webpack(webpackConfig)
 
 app
+  .use(history())
   // Webpack dev server + hot reloading
   .use(require('webpack-dev-middleware')(compiler, {
     publicPath: webpackConfig.output.publicPath,

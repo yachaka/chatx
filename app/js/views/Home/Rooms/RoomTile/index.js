@@ -4,11 +4,14 @@ import cx from 'classnames'
 
 import s from './styles.css'
 
-export default function RoomTile({ name }) {
+export default function RoomTile({ name, userCount, messageCount, ...others }) {
   
   return (
-    <div className={s.tile}>
+    <div className={s.tile} {...others}>
       <h4>{name}</h4>
+
+      <p className={s.messagesCount}>{userCount} users</p>
+      <p className={s.usersCount}>{messageCount} messages</p>
     </div>
   )
 }

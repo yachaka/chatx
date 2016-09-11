@@ -1,16 +1,12 @@
 
-let nextId = 1
-let rooms = [
-  {
-    id: nextId++,
-    name: 'Default Room'
-  }
-]
+const Model = require('./Model')
 
-class Room {
-}
+const Room = new Model()
 
-Room.getAll = () => Promise.resolve(rooms)
-Room.getByIds = ids => Promise.resolve(rooms.filter(room => ids.indexOf(room.id) !== -1))
+Room.create({
+    name: 'Default Room',
+    users: [1],
+    messages: [1],
+})
 
 module.exports = Room
