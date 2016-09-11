@@ -7,7 +7,19 @@ export const storyCreateRoom = (name) => (dispatch, getState, { makeGraphQLReque
   return makeGraphQLRequest(`
   mutation createRoom($name: String!) {
     createRoom(name: $name) {
+      id,
       name,
+      messages {
+        id,
+        body,
+        user {
+          username
+        }
+      }
+      users {
+        id,
+        username,
+      }
     }
   }
   `, { name })

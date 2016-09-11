@@ -6,7 +6,7 @@ import { createSelector } from 'reselect'
 
 import { withPledge, createPledge } from 'lib/pledge'
 import { storyHydrateRoomById, storySendMessageAndHydrateRoom } from 'actions/RoomsActions'
-import { selectRooms } from 'selectors'
+import { selectRooms, selectViewer } from 'selectors'
 import Input from 'components/Input'
 import Button from 'components/Button'
 import s from './styles.css'
@@ -38,10 +38,12 @@ export default class Room extends Component {
           </div>
         </div>
 
-        <Input ref="message" placeholder="Write a message..."/>
-        <Button onClick={this.sendMessage}>
-          Send message
-        </Button>
+        { me && <div>
+          <Input ref="message" placeholder="Write a message..."/>
+          <Button onClick={this.sendMessage}>
+            Send message
+          </Button>
+        </div> || <p>You must be logged in to send a message<br/><a href="/login">Login</a></p> }
       </div>
     )
   }
@@ -67,9 +69,11 @@ PledgedRoom.propTypes = {
 export const ConnectedRoom = connect(
   createSelector(
     selectRooms,
+    selectViewer,
     (_, props) => props.roomId,
-    (rooms, roomId) => ({
-      room: rooms && rooms[roomId]
+    (rooms, me, roomId) => ({
+      room: rooms && rooms[roomId],
+      me,
     }),
   ),
   (dispatch, props) => ({
