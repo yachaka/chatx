@@ -1,0 +1,12 @@
+
+#rooms {
+
+  & > div {
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+  & > div:last-child {
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+}

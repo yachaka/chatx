@@ -1,0 +1,7 @@
+
+.tile {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  display: inline-block;
+}
