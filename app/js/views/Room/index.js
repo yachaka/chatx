@@ -76,8 +76,8 @@ export default class Room extends Component {
           </p> }
 
           <div id={s.messages}>
-            { room.messages.map(group => (
-              <div key={group.user.id} className={s.messageGroup}>
+            { room.messages.map((group, i) => (
+              <div key={i} className={s.messageGroup}>
                 <div className={s.picture}>
                   <PictureBubble size={36} image={group.user.avatar} />
                 </div>
