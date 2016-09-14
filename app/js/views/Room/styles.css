@@ -1,21 +1,80 @@
 
 #room {
 
-  #main {
-    border: 1px solid #ccc;
+  h2 {
     margin-bottom: 10px;
+  }
 
-    #users, #messages {
-      padding: 20px;
+  #users {
+    margin-bottom: 30px;
+  }
+
+  #main {
+    width: 400px;
+    margin: auto;
+    padding: 20px;
+
+    .has-history {
+      padding-left: 44px;
+      color: #7762CF;
+      opacity: 0.4;
+      margin-bottom: 20px;
     }
-
-    #users {
-      float: right;
-      border-left: 1px solid #ccc;
-    }
-
+    
     #messages {
 
+      .message-group {
+        .picture {
+          float: left;
+          margin-right: 8px;
+        }
+
+        .messages {
+          font-size: 15px;
+          line-height: 17px;
+          overflow: hidden;
+          margin-bottom: 20px;
+
+          .username, .message {
+            padding: 4px 10px;
+          }
+          .username {
+            font-weight: bold;
+            margin-bottom: 2px;
+          }
+          .message {
+            clear: left;
+            float: left;
+            background-color: #f9f9f9;
+            border-radius: 200px;
+            margin-bottom: 5px;
+          }
+        }
+      }
+    }
+
+    #mustLogin {
+      padding-left: 44px;
+      color: #666;
+    }
+
+    #reply {
+      padding-left: 44px;
+
+      input {
+        width: 100%;
+        margin-bottom: 8px;
+      }
+
+      .actions {
+        button {
+          margin-right: 8px;
+        }
+        .help-text {
+          display: inline-block;
+          color: #ccc;
+        }
+      }
     }
   }
 }

@@ -4,12 +4,12 @@ import cx from 'classnames'
 
 import s from './styles.css'
 
-export default function Button({ type, children, ...others }) {
+export default function Button({ type = 'primary', Component = 'button', className, disabled = false, children, ...others }) {
   
   return (
-    <button className={cx(s.button, s[type])} {...others}>
+    <Component className={cx(s.button, s[type], { [s.disabled]: disabled }, className)} {...others}>
       {children}
-    </button>
+    </Component>
   )
 }
 

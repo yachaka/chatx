@@ -1,6 +1,6 @@
 
-
 import React, { Component } from 'react'
+import cx from 'classnames'
 
 import s from './styles.css'
 
@@ -15,9 +15,10 @@ class Input extends Component {
   }
 
   render() {
+    const { className, ...others } = this.props
 
     return (
-      <input className={s.input} ref="input" {...this.props} />
+      <input className={cx(s.input, className)} ref="input" {...others} />
     )
   }
 }

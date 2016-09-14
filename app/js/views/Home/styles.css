@@ -1,12 +1,53 @@
 
 #home {
 
-  .actions {
-    margin-bottom: 10px;
+  #users {
+    text-align: center;
+    margin-bottom: 40px;
+    height: 48px;
 
-    .createInput {
+    #who {
+      font-size: 14px;
+      color: #999;
+      height: 48px;
+      line-height: 48px;
+      margin: 0;
+    }
+    #who, .user {
       display: inline-block;
-      margin-right: 10px;
+      margin: 0 8px;
+    }
+  }
+
+  .rooms {
+    margin-bottom: 30px;
+  }
+
+  #create-room {
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+    margin: auto;
+    border-radius: 60px;
+    text-align: center;
+    border: 1px solid #915AA8;
+    color: #915AA8;
+
+    &:hover {
+      cursor: pointer;
+      color: color(#915AA8 lightness(+8%));
+      border-color: color(#915AA8 lightness(+8%));
+    }
+
+    &:active {
+      color: color(#915AA8 blackness(+8%));
+      border-color: color(#915AA8 blackness(+8%));
+    }
+
+    .wrap {
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 17px;
     }
   }
 }

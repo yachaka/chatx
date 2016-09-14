@@ -1,12 +1,11 @@
 
 #rooms {
+  display: flex;
+  justify-content: center;
 
-  & > div {
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-  & > div:last-child {
-    margin-right: 0;
-    margin-bottom: 0;
+  flew-wrap: wrap;
+
+  .room {
+    margin: 0 30px;
   }
 }

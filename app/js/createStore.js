@@ -3,8 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { routerMiddleware } from 'react-router-redux'
 
-import { makeGraphQLRequest } from 'lib/makeGraphQLRequest'
-import request from 'lib/request'
+import io from 'lib/socket.io'
 import reducer from './reducer'
 
 export default (initialState, history) => {
@@ -12,8 +11,7 @@ export default (initialState, history) => {
   let middlewares = [
     function (dispatch, getState) {
       return thunk.withExtraArgument({
-        makeGraphQLRequest,
-        request,
+        io,
       })(dispatch, getState)
     },
     routerMiddleware(history)

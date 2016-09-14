@@ -1,8 +1,10 @@
 
 .button {
-
+  display: inline-block;
+  text-decoration: none;
   padding: 6px 8px;
   font-size: 14px;
+  line-height: 17px;
   border: 1px solid transparent;
   border-radius: 2px;
   background-color: transparent;
@@ -11,6 +13,13 @@
   &:hover {
     cursor: pointer;
   }
+}
+
+.button.disabled {
+  background-color: #e2e2e2;
+  color: #999 !important;
+  border-color: #e2e2e2 !important;
+  cursor: not-allowed;
 }
 
 .button.primary {

@@ -1,0 +1,15 @@
+
+.user {
+  position: relative;
+  display: inline-block;
+  
+  .typing {
+    position: absolute;
+    right: -6px;
+    top: -6px;
+    background-color: #fff;
+    padding: 2px 4px;
+    border-radius: 8px;
+    text-align: center;
+  }
+}

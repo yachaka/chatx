@@ -1,86 +1,143 @@
 
 import identity from 'identity-function'
+import throttle from 'lodash/throttle'
 import React, { PropTypes as T, Component } from 'react'
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
 
-import { withPledge, createPledge } from 'lib/pledge'
-import { storyHydrateRoomById, storySendMessageAndHydrateRoom } from 'actions/RoomsActions'
-import { selectRooms, selectViewer } from 'selectors'
+import io from 'lib/socket.io'
+import { selectRoomAndQuery, selectViewer } from 'selectors'
+import { storyReply, storyUserTyping } from 'actions'
+import { groupByUser } from 'lib/helpers/MessagesHelpers'
+import * as schema from 'schema'
+import querySchema from 'lib/querySchema'
+import UsersBar from 'components/UsersBar'
+import PictureBubble from 'components/PictureBubble'
 import Input from 'components/Input'
 import Button from 'components/Button'
 import s from './styles.css'
+
+const TYPING_DEBOUNCED = 600
 
 /*
  * Default component
  */
 export default class Room extends Component {
-  
+
+  state = {
+    message: '',
+  }
+
+  componentWillMount() {
+    io.emit('join', this.props.room.id)
+  }
+
+  componentWillUnmount() {
+    io.emit('leave', this.props.room.id)
+  }
+
+  inputChange = (e) => {
+    this.setState({ message: e.target.value })
+  }
+
+  keyDown = (e) => {
+    if (e.keyCode === 13) {
+      this.sendMessage()
+      this.props.setTyping(false)
+    } else {
+      this.typing()
+    }
+  }
+
+  typing = throttle(() => {
+    this.props.setTyping(true)
+  }, 600)
+
   sendMessage = () => {
-    this.props.sendMessage(this.refs.message.value)
-    this.refs.message.value = ''
+    this.props.reply(this.state.message)
+    this.setState({ message: '' })
   }
 
   render() {
-    const { me, room } = this.props
+    const { me, room, hasHistory } = this.props
+    const { message } = this.state
 
     return (
       <div id={s.room}>
-        <h1>{ room.name }</h1>
+        <h2>{ room.name }</h2>
 
-        <div id={s.main}>
-          <div id={s.users}>
-            { room.users.map(user => <p key={user.id} className={s.user}>{user.username}</p>) }
-          </div>
-
-          <div id={s.messages}>
-            { room.messages.map(msg => <p key={msg.id} className={s.message}><strong>{msg.user.username}:</strong> {msg.body}</p>) }
-          </div>
+        <div id={s.users}>
+          <UsersBar users={room.users} />
         </div>
 
-        { me && <div>
-          <Input ref="message" placeholder="Write a message..."/>
-          <Button onClick={this.sendMessage}>
-            Send message
-          </Button>
-        </div> || <p>You must be logged in to send a message<br/><a href="/login">Login</a></p> }
+        <div id={s.main}>
+          { hasHistory && <p className={s.hasHistory}>
+            History...
+          </p> }
+
+          <div id={s.messages}>
+            { room.messages.map(group => (
+              <div key={group.user.id} className={s.messageGroup}>
+                <div className={s.picture}>
+                  <PictureBubble size={36} image={group.user.avatar} />
+                </div>
+
+                <div className={s.messages}>
+                  <p className={s.username}>{group.user.username}</p>
+
+                  { group.messages.map(msg => (<p key={msg.id} className={s.message}>{msg.body}</p>)) }
+                </div>
+              </div>
+            )) }
+                
+          </div>
+
+          { me && 
+            <div id={s.reply}>
+              <Input value={message} onChange={this.inputChange} onKeyDown={this.keyDown} placeholder="Write a message..." autoFocus />
+              <div className={s.actions}>
+                <Button onClick={this.sendMessage} disabled={message === ''}>
+                  Send message
+                </Button>
+                <p className={s.helpText}>
+                  or press Enter
+                </p>
+              </div>
+            </div> || <p id={s.mustLogin}>
+              <i className="fa fa-lock"></i> You must have an account to post messages.
+            </p> }
+        </div>
+    {/* || <p>You must be logged in to send a message<br/><a href="/login">Login</a></p>*/}
       </div>
     )
   }
 }
 Room.propTypes = {
   me: T.object,
-  room: T.object.isRequired,
+  room: T.object,
 }
 
-/* Pledge HoC */
-export const PledgedRoom = withPledge(
-  createPledge(
-    props => props.room && props.room.messages && props.room.users && props.room.id,
-    props => props.hydrateRoom(),
-  ),
-  true,
-)(Room)
-PledgedRoom.propTypes = {
-  hydrateRoom: T.func.isRequired,
-}
+const CHAT_MESSAGES_LIMIT = 5
 
 /* Connect HoC */
 export const ConnectedRoom = connect(
   createSelector(
-    selectRooms,
+    selectRoomAndQuery('roomId'),
     selectViewer,
-    (_, props) => props.roomId,
-    (rooms, me, roomId) => ({
-      room: rooms && rooms[roomId],
+    (room, me) => ({
+      room: room && {
+        ...room,
+        messages: groupByUser(room.messages.slice(CHAT_MESSAGES_LIMIT * -1)),
+      } || room,
       me,
+      hasHistory: room && room.messages.length > CHAT_MESSAGES_LIMIT || false,
     }),
   ),
   (dispatch, props) => ({
-    hydrateRoom: () => dispatch(storyHydrateRoomById(props.roomId)),
-    sendMessage: (body) => dispatch(storySendMessageAndHydrateRoom(props.roomId, body))
+    reply: (body) => dispatch(storyReply(body, props.roomId)),
+    setTyping: (typing) => dispatch(storyUserTyping(typing)),
   })
-)(PledgedRoom)
+)((props) => props.room && <Room {...props} /> : null)
 ConnectedRoom.propTypes = {
-  roomId: T.number.isRequired,
+  roomId: T.string.isRequired,
 }

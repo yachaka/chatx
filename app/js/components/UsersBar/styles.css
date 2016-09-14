@@ -1,0 +1,8 @@
+
+#users {
+  text-align: center;
+
+  .user {
+    margin: 0 8px;
+  }
+}

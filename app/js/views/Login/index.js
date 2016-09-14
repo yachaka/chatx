@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { storyLoginAndHydrate } from 'actions/GlobalActions'
+import { storyLogin } from 'actions'
 import Input from 'components/Input'
 import Button from 'components/Button'
 import s from './styles.css'
@@ -10,34 +10,38 @@ import s from './styles.css'
 export default class Login extends Component {
   
   state = {
-    unauthorized: false,
+    error: null,
+  }
+
+  inputs = {
+    username: null,
+    password: null,
   }
 
   clean = () => {
-    if (this.state.unauthorized)
+    if (this.state.error)
       this.setState({
-        unauthorized: false,
+        error: null,
       })
   }
 
   login = () => {
     this.props.login({
-      username: this.refs.username.value,
-      password: this.refs.password.value
+      username: this.inputs.username.value,
+      password: this.inputs.password.value,
     })
-      .catch(e => this.setState({ unauthorized: true }))
+      .catch(e => this.setState({ error: e }))
   }
 
   render() {
-    const { unauthorized } = this.state
+    const { error } = this.state
 
     return (
       <div id={s.login}>
-        <h1>Login</h1>
+        { error && <p className={s.error}>{error}</p> }
 
-        { unauthorized && <p id={s.authError}>Invalid credentials</p> }
-        <Input ref="username" autoFocus type="text" placeholder="username" onKeyDown={this.clean} defaultValue="John Doe" /> 
-        <Input ref="password" type="password" placeholder="password" onKeyDown={this.clean} defaultValue="123456" />
+        <Input ref={el => this.inputs.username = el || this.inputs.username} autoFocus type="text" placeholder="username" onKeyDown={this.clean} defaultValue="SpaceX" /> 
+        <Input ref={el => this.inputs.password = el || this.inputs.password} placeholder="password" onKeyDown={this.clean} defaultValue="123456" />
 
         <Button onClick={this.login}>
           Login
@@ -50,6 +54,6 @@ export default class Login extends Component {
 export const ConnectedLogin = connect(
   null,
   {
-    login: storyLoginAndHydrate,
+    login: storyLogin,
   }
 )(Login)

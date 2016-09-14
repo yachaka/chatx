@@ -1,0 +1,20 @@
+
+#login {
+  width: 300px;
+  margin: auto;
+  text-align: center;
+
+  .error, input {
+    margin-bottom: 10px;
+  }
+  .error {
+    color: red;
+  }
+  input {
+    display: block;
+    width: 100%;
+  }
+  button {
+    margin: auto;
+  }
+}

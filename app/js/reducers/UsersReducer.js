@@ -1,7 +1,7 @@
 
 import rethinkDBChangesReducer from './rethinkDBChangesReducer'
 import {
-  UPDATE_ROOMS,
+  UPDATE_USERS,
 } from 'actions'
 
-export default rethinkDBChangesReducer(UPDATE_ROOMS)
+export default rethinkDBChangesReducer(UPDATE_USERS)

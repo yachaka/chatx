@@ -1,8 +1,4 @@
 
-require('source-map-support').install({
-  environment: 'node',
-})
-
 const jsdom = require('jsdom').jsdom
 
 global.document = jsdom('')
